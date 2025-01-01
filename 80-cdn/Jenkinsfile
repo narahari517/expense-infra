@@ -20,7 +20,7 @@ pipeline {
             steps {
                 withAWS(region: 'us-east-1', credentials: 'aws-creds') {
                     sh """
-                        cd 20-bastion
+                        cd 80-cdn
                         terraform init --reconfigure
                         terraform plan -out=tfplan
                     """
@@ -37,7 +37,7 @@ pipeline {
             steps {
                 withAWS(region: 'us-east-1', credentials: 'aws-creds') {
                     sh """
-                        cd 20-bastion
+                        cd 80-cdn
                         if [ ${params.ACTION} == 'apply' ]
                         then
                             terraform apply -auto-approve tfplan
@@ -47,6 +47,51 @@ pipeline {
                         fi
                     """
                 }
+            }
+        }
+
+        stage('Parallel-1') {
+            when {
+                expression { params.ACTION == 'destroy' }
+            }
+            parallel {
+                stage('ECR') {
+                    steps {
+                        build job: '70-ecr', parameters: [string(name: 'ACTION', value: "destroy")], wait: false
+                    }
+                }
+                stage('ALB') {
+                    steps {
+                        build job: '60-alb', parameters: [string(name: 'ACTION', value: "destroy")], wait: false
+                    }
+                }
+                stage('ACM') {
+                    steps {
+                        build job: '50-acm', parameters: [string(name: 'ACTION', value: "destroy")], wait: false
+                    }
+                }
+                stage('EKS') {
+                    steps {
+                        build job: '40-eks', parameters: [string(name: 'ACTION', value: "destroy")], wait: false
+                    }
+                }
+                stage('Bastion') {
+                    steps {
+                        build job: '20-bastion', parameters: [string(name: 'ACTION', value: "apply")], wait: false
+                    }
+                }
+            }
+        }
+
+        stage('SG destroy') {
+            steps {
+                build job: '10-sg', parameters: [string(name: 'ACTION', value: "destroy")], wait: false
+            }
+        }
+
+        stage('VPC destroy') {
+            steps {
+                build job: '00-vpc', parameters: [string(name: 'ACTION', value: "destroy")], wait: false
             }
         }
         
