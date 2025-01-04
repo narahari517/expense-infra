@@ -14,10 +14,13 @@ variable "common_tags" {
     }
 }
 
+variable "rds_tags" {
+    default = {
+        Component = "mysql"
+    }
+}
+
 variable "zone_name" {
     default = "nhari.online"
 }
 
-variable "zone_id" {
-    default = "Z04262633254S70K513PP"
-}

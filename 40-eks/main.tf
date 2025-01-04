@@ -3,7 +3,7 @@ resource "aws_key_pair" "eks" {
   # you can paste the public key directly like this
   #public_key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIL6ONJth+DzeXbU3oGATxjVmoRjPepdl7sBuPzzQT2Nc sivak@BOOK-I6CR3LQ85Q"
   #public_key = file("~/.ssh/eks.pub")
-  public_key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOCfciKpBneM6NC5JzEERr7NGeHDeuezmiEJ/VuuaT3i Hari@DESKTOP-PEEVL0V"
+  public_key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKXDAieUNn8MOZ2xRoCoiLorGftqlvCaMZ2aOrlMrYJ8 Hari@DESKTOP-PEEVL0V"
   # ~ means windows home directory
 }
 

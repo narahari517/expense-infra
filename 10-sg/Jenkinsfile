@@ -92,6 +92,11 @@ pipeline {
                 expression { params.ACTION == 'apply' }
             }
             parallel {
+                stage('ACM') {
+                    steps {
+                        build job: '50-acm', parameters: [string(name: 'ACTION', value: "apply")]
+                    }
+                }
                 stage('ALB') {
                     steps {
                         build job: '60-alb', parameters: [string(name: 'ACTION', value: "apply")], wait: false
