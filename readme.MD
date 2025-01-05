@@ -20,28 +20,38 @@ We are using bastion as our EKS client, so it will have
 mysql -h expense-dev.czn6yzxlcsiv.us-east-1.rds.amazonaws.com -u root -pExpenseApp1
 ```
 
+```python
 USE transactions;
+```
 
+```python
 CREATE TABLE IF NOT EXISTS transactions (
     id INT AUTO_INCREMENT PRIMARY KEY,
     amount INT,
     description VARCHAR(255)
 );
+```
 
+```python
 CREATE USER IF NOT EXISTS 'expense'@'%' IDENTIFIED BY 'ExpenseApp@1';
+```
 
+```python
 GRANT ALL ON transactions.* TO 'expense'@'%';
+```
 
+```python
 FLUSH PRIVILEGES;
+```
 
 
 **Target group binding**
 
 - If we are running frontend using normal user it can't bind the port 80. non root privelege user running container are not able to open system ports which are under 1024.
 - So we have to use port no 8080 for frontend. Make sure
-    ~ nginx.conf opens port no 8080 instead of 80.
-    ~ ALB target group health check port should be 8080.
-    ~ frontend service target port should be 8080 instead of 80.
+$nginx.conf opens port no 8080 instead of 80.
+ALB target group health check port should be 8080.
+frontend service target port should be 8080 instead of 80.$
 
 
 **Ingress Controller**
