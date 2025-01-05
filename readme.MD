@@ -55,7 +55,7 @@ FLUSH PRIVILEGES;
     * frontend service target port should be 8080 instead of 80.
 
 
-$**Ingress Controller**$
+`**Ingress Controller**`
 - Login to bastion host and get the kubeconfig of EKS cluster
 
 ```python
