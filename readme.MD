@@ -58,11 +58,17 @@ FLUSH PRIVILEGES;
 **Ingress Controller**
 - Login to bastion host and get the kubeconfig of EKS cluster
 
+```python
 aws configure
+```
 
+```python
 aws eks update-kubeconfig --region us-east-1 --name expense-dev
+```
 
+```python
 kubectl get nodes
+```
 
 
 **Create namespace expense**
