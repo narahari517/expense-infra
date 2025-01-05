@@ -46,7 +46,7 @@ FLUSH PRIVILEGES;
 
 
 
-**Target group binding**
+### Target group binding
 
 - If we are running frontend using normal user it can't bind the port 80. non root privelege user running container are not able to open system ports which are under 1024.
 - So we have to use port no 8080 for frontend. Make sure
@@ -55,7 +55,7 @@ FLUSH PRIVILEGES;
     * frontend service target port should be 8080 instead of 80.
 
 
-**Ingress Controller**
+## Ingress Controller
 - Login to bastion host and get the kubeconfig of EKS cluster
 
 ```python
