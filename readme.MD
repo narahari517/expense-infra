@@ -55,7 +55,7 @@ FLUSH PRIVILEGES;
     * frontend service target port should be 8080 instead of 80.
 
 
-###### **Ingress Controller**
+**Ingress Controller**
 - Login to bastion host and get the kubeconfig of EKS cluster
 
 ```python
@@ -71,18 +71,29 @@ kubectl get nodes
 ```
 
 
-**Create namespace expense**
+- Create namespace expense
+
+```python
 kubectl create namespace expense
+```
 
-**IAM policy**
+- IAM policy
+
+```python
 curl -o iam-policy.json https://raw.githubusercontent.com/kubernetes-sigs/aws-load-balancer-controller/v2.10.0/docs/install/iam_policy.json
+```
 
-**IAM Role created**
+- IAM Role created
+
+```python
 aws iam create-policy \
     --policy-name AWSLoadBalancerControllerIAMPolicy \
     --policy-document file://iam-policy.json
+```
 
-**Create Service account. Replace your account ID.**
+- Create Service account. Replace your account ID.
+
+```python
 eksctl create iamserviceaccount \
 --cluster=expense-dev \
 --namespace=kube-system \
@@ -91,14 +102,21 @@ eksctl create iamserviceaccount \
 --override-existing-serviceaccounts \
 --region us-east-1 \
 --approve
+```
 
-**Install aws load balancer controller drivers through helm.**
+- Install aws load balancer controller drivers through helm.
 
+```python
 helm repo add eks https://aws.github.io/eks-charts
+```
 
+```python
 helm install aws-load-balancer-controller eks/aws-load-balancer-controller -n kube-system --set clusterName=expense-dev --set serviceAccount.create=true --set serviceAccount.name=aws-load-balancer-controller
+```
 
-**Make sure load balancer pods are running**
+- Make sure load balancer pods are running
+
+```python
 kubectl get pods -n kube-system
 NAME                                            READY   STATUS    RESTARTS   AGE
 aws-load-balancer-controller-689495d45f-mwmg6   0/1     Running   0          8s
@@ -111,3 +129,4 @@ eks-pod-identity-agent-9ngdt                    1/1     Running   0          5m1
 eks-pod-identity-agent-cj98g                    1/1     Running   0          5m17s
 kube-proxy-7sgw7                                1/1     Running   0          6m4s
 kube-proxy-8zb7z                                1/1     Running   0          6m5s
+```
