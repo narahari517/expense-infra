@@ -2,7 +2,7 @@ resource "aws_key_pair" "eks" {
   key_name   = "eks"
   # you can paste the public key directly like this
   #public_key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIL6ONJth+DzeXbU3oGATxjVmoRjPepdl7sBuPzzQT2Nc sivak@BOOK-I6CR3LQ85Q"
-  #public_key = file("~/.ssh/eks.pub")
+  //public_key = file("~/.ssh/eks.pub")
   public_key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKXDAieUNn8MOZ2xRoCoiLorGftqlvCaMZ2aOrlMrYJ8 Hari@DESKTOP-PEEVL0V"
   # ~ means windows home directory
 }
@@ -42,10 +42,10 @@ module "eks" {
 
   eks_managed_node_groups = {
     # blue = {
-    #   min_size      = 2
+    #   min_size      = 3
     #   max_size      = 10
-    #   desired_size  = 2
-    #   #capacity_type = "SPOT"
+    #   desired_size  = 3
+    #   capacity_type = "SPOT"
     #   iam_role_additional_policies = {
     #     AmazonEBSCSIDriverPolicy          = "arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy"
     #     AmazonElasticFileSystemFullAccess = "arn:aws:iam::aws:policy/service-role/AmazonEFSCSIDriverPolicy"
@@ -55,10 +55,10 @@ module "eks" {
     #   key_name = aws_key_pair.eks.key_name
     # }
     green = {
-      min_size      = 2
+      min_size      = 3
       max_size      = 10
-      desired_size  = 2
-      #capacity_type = "SPOT"
+      desired_size  = 3
+      capacity_type = "SPOT"
       iam_role_additional_policies = {
         AmazonEBSCSIDriverPolicy          = "arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy"
         AmazonElasticFileSystemFullAccess = "arn:aws:iam::aws:policy/AmazonElasticFileSystemFullAccess"

@@ -2,7 +2,7 @@ pipeline {
     agent {
         label 'agent-1'
     }
-    options {
+    options{
         timeout(time: 30, unit: 'MINUTES')
         disableConcurrentBuilds()
         ansiColor('xterm')
@@ -10,10 +10,9 @@ pipeline {
     // environment {
     //     DEBUG = 'true'
     // }
-    parameters {
-        
-        choice(name: 'ACTION', choices: ['apply', 'destroy'], description: 'Select Action') 
 
+    parameters {
+        choice(name: 'ACTION', choices: ['apply', 'destroy'], description: 'Select Action')
     }
     stages {
         stage('Init and Plan') {
@@ -21,7 +20,7 @@ pipeline {
                 withAWS(region: 'us-east-1', credentials: 'aws-creds') {
                     sh """
                         cd 40-eks
-                        terraform init --reconfigure
+                        terraform init -reconfigure
                         terraform plan -out=tfplan
                     """
                 }
@@ -29,11 +28,10 @@ pipeline {
         }
 
         stage('Apply or Destroy') {
-            // input {
-            //     message "Should we continue to ${params.ACTION}?"
-            //     ok "Yes, we should."
-            // }
-
+            /* input {
+                message "Should we continue to ${params.ACTION}"
+                ok "Yes, we should."
+            } */
             steps {
                 withAWS(region: 'us-east-1', credentials: 'aws-creds') {
                     sh """
@@ -49,19 +47,18 @@ pipeline {
                 }
             }
         }
-        
     }
 
     post {
         always{
-            echo "This section runs always"
+            echo "This sections runs always"
             deleteDir()
         }
         success{
-            echo "This section runs when pipeline success"
+            echo "This section run when pipeline success"
         }
         failure{
-            echo "This section runs when pipeline failure"
+            echo "This section run when pipeline failure"
         }
     }
 }
