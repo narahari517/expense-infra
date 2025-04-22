@@ -24,7 +24,7 @@ pipeline {
         }
         stage('apply or destroy') {
             input {
-                message "Should we continue?"
+                message "Should we continue ${params.ACTION} ?"
                 ok "Yes, we should."
             }
             steps {
@@ -42,6 +42,10 @@ pipeline {
                 }
             }
         }
-        
+        stage('trigger SG') {
+            steps {
+                build job: '10-sg', parameters: [[$class: 'ExtendedChoiceParameterValue', name: 'ACTION', value: 'apply']]
+            }
+        }
     }
 }
