@@ -52,6 +52,24 @@ pipeline {
             }
             
         }
+
+        stage('Parallel In Sequential') {
+            when {
+                expression { params.ACTION == 'apply'}
+            }
+            parallel {
+                stage('bastion') {
+                    steps {
+                        build job: '20-bastion', parameters: [string(name: 'ACTION', value: "apply")], wait: false
+                    }
+                }
+                stage('eks') {
+                    steps {
+                        build job: '40-bastion', parameters: [string(name: 'ACTION', value: "apply")], wait: false
+                    }
+                }
+            }
+        }
         
     }
 

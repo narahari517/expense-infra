@@ -1,22 +1,17 @@
 pipeline {
     agent {
-        label 'agent-1'
+        label 'AGENT-1'
     }
     options {
         timeout(time: 30, unit: 'MINUTES')
         disableConcurrentBuilds()
         ansiColor('xterm')
     }
-    // environment {
-    //     DEBUG = 'true'
-    // }
     parameters {
-        
-        choice(name: 'ACTION', choices: ['apply', 'destroy'], description: 'Select Action') 
-
+        choice(name: 'ACTION', choices: ['apply', 'destroy'], description: 'Pick any action')
     }
     stages {
-        stage('Init and Plan') {
+        stage('init and plan') {
             steps {
                 withAWS(region: 'us-east-1', credentials: 'aws-creds') {
                     sh """
@@ -27,13 +22,11 @@ pipeline {
                 }
             }
         }
-
-        stage('Apply or Destroy') {
-            // input {
-            //     message "Should we continue to ${params.ACTION}?"
-            //     ok "Yes, we should."
-            // }
-
+        stage('apply or destroy') {
+            input {
+                message "Should we continue ${params.ACTION} ?"
+                ok "Yes, we should."
+            }
             steps {
                 withAWS(region: 'us-east-1', credentials: 'aws-creds') {
                     sh """
@@ -53,15 +46,15 @@ pipeline {
     }
 
     post {
-        always{
-            echo "This section runs always"
+        always {
+            echo "this section always runs"
             deleteDir()
         }
-        success{
-            echo "This section runs when pipeline success"
+        success {
+            echo "this section runs when pipeline is successful"
         }
-        failure{
-            echo "This section runs when pipeline failure"
+        failure {
+            echo "this section runs when pipeline is failed"
         }
     }
 }
