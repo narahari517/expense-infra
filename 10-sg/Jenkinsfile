@@ -42,6 +42,29 @@ pipeline {
                 }
             }
         }
+
+        stage('destroy vpc') {
+            when {
+                expression { params.action == 'destroy'}
+            }
+            steps {
+                build job: '00-vpc', parameters: [string(name: 'ACTION', value: "destroy")], wait: false
+            }
+            
+        }
         
+    }
+
+    post {
+        always {
+            echo "this section always runs"
+            deleteDir()
+        }
+        success {
+            echo "this section runs when pipeline is successful"
+        }
+        failure {
+            echo "this section runs when pipeline is failed"
+        }
     }
 }
