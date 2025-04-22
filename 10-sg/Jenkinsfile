@@ -65,7 +65,7 @@ pipeline {
                 }
                 stage('eks') {
                     steps {
-                        build job: '40-bastion', parameters: [string(name: 'ACTION', value: "apply")], wait: false
+                        build job: '40-eks', parameters: [string(name: 'ACTION', value: "apply")], wait: false
                     }
                 }
             }
